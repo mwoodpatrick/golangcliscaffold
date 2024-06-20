@@ -1,11 +1,16 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-    log "github.com/sirupsen/logrus"
+	"fmt"
+
+	"github.com/mwoodpatrick/golangcliscaffold/common"
+	"github.com/mwoodpatrick/golangcliscaffold/dirs"
+
+	// "github.com/mwoodpatrick/golangcliscaffold/dirs"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -20,18 +25,21 @@ var dirsCmd = &cobra.Command{
 	Long:  `Quickly scan a directory and find large directories. Use the flags below to target the output.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if Debug {
-			for key, value := range viper.GetViper().AllSettings() {
-				log.WithFields(log.Fields{
-					key: value,
-				}).Info("Command Flag")
-			}
+			common.LogFlags()
+		}
+		dirsFound, err := dirs.ReadDirDepth(Path)
+		if err != nil {
+			fmt.Println("Error:", err)
+		} else {
+			fmt.Println("Directories found:", dirsFound)
+			dirs.PrintResults(dirsFound)
 		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(dirsCmd)
-    
+
 	dirsCmd.PersistentFlags().IntVarP(&Depth, "depth", "", 2, "Depth of directory tree to display")
 	viper.BindPFlag("depth", dirsCmd.PersistentFlags().Lookup("depth"))
 

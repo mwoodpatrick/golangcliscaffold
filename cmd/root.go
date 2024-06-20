@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 NAME HERE mwoodpatrick@gmail.com
+Copyright © 2024 Mark Wood-Patrick mwoodpatrick@gmail.com
 
 */
 package cmd
@@ -16,9 +16,11 @@ var Debug bool
 var Highlight int
 var Path string
 
+var version = "0.0.1"
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
  Use:   "getsize",
+ Version: version,
  Short: "List the size of a local directory.",
  Long: `This command will display the size of a directory with several different options.`,
 }
